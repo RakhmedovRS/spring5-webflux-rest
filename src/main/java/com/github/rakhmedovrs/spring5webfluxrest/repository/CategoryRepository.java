@@ -7,6 +7,6 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
  * @author RakhmedovRS
  * @created 07-Sep-20
  */
-public interface CategoryRepository extends ReactiveMongoRepository<String, Category>
+public interface CategoryRepository extends ReactiveMongoRepository<Category, String>
 {
 }
