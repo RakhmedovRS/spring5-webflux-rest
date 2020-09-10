@@ -52,21 +52,21 @@ public class Bootstrap implements CommandLineRunner
 		Category nuts = new Category();
 		nuts.setDescription("Nuts");
 
-		categoryRepository.save(fruits);
-		categoryRepository.save(dried);
-		categoryRepository.save(fresh);
-		categoryRepository.save(exotic);
-		categoryRepository.save(nuts);
+		categoryRepository.save(fruits).block();
+		categoryRepository.save(dried).block();
+		categoryRepository.save(fresh).block();
+		categoryRepository.save(exotic).block();
+		categoryRepository.save(nuts).block();
 	}
 
 	private void loadVendors()
 	{
 		Vendor vendor1 = new Vendor();
 		vendor1.setFirstName("Vendor 1");
-		vendorRepository.save(vendor1);
+		vendorRepository.save(vendor1).block();
 
 		Vendor vendor2 = new Vendor();
 		vendor2.setFirstName("Vendor 2");
-		vendorRepository.save(vendor2);
+		vendorRepository.save(vendor2).block();
 	}
 }
