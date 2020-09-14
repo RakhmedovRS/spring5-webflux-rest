@@ -7,12 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
+import org.reactivestreams.Publisher;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 
 /**
  * @author RakhmedovRS
@@ -60,5 +61,22 @@ class CategoryControllerTest
 			.uri("/api/v1/category/dfgdfg")
 			.exchange()
 			.expectBody(Category.class);
+	}
+
+	@Test
+	public void testCreateCategory()
+	{
+		BDDMockito.given(categoryRepository.saveAll(any(Publisher.class)))
+			.willReturn(Flux.just(Category.builder().description("Category1").build()));
+
+		Mono<Category> categoryToSaveMono = Mono.just(Category.builder().description("Category1").build());
+
+		webTestClient
+			.post()
+			.uri("/api/v1/categories")
+			.body(categoryToSaveMono, Category.class)
+			.exchange()
+			.expectStatus()
+			.isCreated();
 	}
 }
