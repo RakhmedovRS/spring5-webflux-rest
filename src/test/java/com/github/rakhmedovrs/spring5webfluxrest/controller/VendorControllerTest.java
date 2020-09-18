@@ -1,5 +1,6 @@
 package com.github.rakhmedovrs.spring5webfluxrest.controller;
 
+import com.github.rakhmedovrs.spring5webfluxrest.domain.Category;
 import com.github.rakhmedovrs.spring5webfluxrest.domain.Vendor;
 import com.github.rakhmedovrs.spring5webfluxrest.repository.VendorRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,6 +77,22 @@ class VendorControllerTest
 			.post()
 			.uri("/api/v1/vendor")
 			.body(vendorForPost, Vendor.class)
+			.exchange()
+			.expectBody(Vendor.class);
+	}
+
+	@Test
+	public void TestPut()
+	{
+		BDDMockito.given(vendorRepository.save(any(Vendor.class)))
+			.willReturn(Mono.just(Vendor.builder().firstName("firstName1").lastName("lastName1").build()));
+
+		Mono<Category> vendorToUpdateMono = Mono.just(Category.builder().description("Category1").build());
+
+		webTestClient
+			.put()
+			.uri("/api/v1/vendor/1")
+			.body(vendorToUpdateMono, Vendor.class)
 			.exchange()
 			.expectBody(Vendor.class);
 	}
